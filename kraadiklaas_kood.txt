@@ -1,0 +1,30 @@
+
+#include <OneWire.h> // kasutatakse OneWire teeki kuna tegemist on uhe juhtme toopohimottel tootava KRAADIKLAASIGA.
+#include <DallasTemperature.h> 
+#include <LiquidCrystal.h> // Kasutatakse ekraani.
+
+LiquidCrystal lcd (12, 11, 6, 5, 4, 3); // Ekraanid tootavad eelevalt mainitud PINidel.
+
+// Sensori DATA pin on uhendatud Arduino pin nr. 2 peale.
+#define ONE_WIRE_BUS 2
+ 
+OneWire oneWire(ONE_WIRE_BUS);
+ 
+DallasTemperature sensors(&oneWire);
+ 
+void setup(void)
+{
+  sensors.begin(); // Sensor pannakse toole.
+  lcd.begin (16, 2); // Ekraanil kasutatakse kahte rida ja kummagil real 16t kohta.
+  lcd.print("Temperatuur on:");
+}
+ 
+ 
+void loop()
+{
+ 
+  lcd.setCursor (0,1);// request to all devices on the bus
+  sensors.requestTemperatures(); // Saadab sensorile kasu temperatuuri kontrollida.
+
+  lcd.print(sensors.getTempCByIndex(0)); // Trukib ekraanile saadud tulemuse.
+}
